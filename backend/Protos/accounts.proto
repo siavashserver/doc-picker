@@ -1,0 +1,58 @@
+syntax = "proto3";
+
+option csharp_namespace = "Services.Accounts";
+
+package accounts;
+
+service Accounts {
+  rpc CreateAccount(CreateAccountRequest) returns (CreateAccountResponse);
+  rpc GetAccount(GetAccountRequest) returns (GetAccountResponse);
+  rpc UpdateAccount(UpdateAccountRequest) returns (UpdateAccountResponse);
+  rpc DeleteAccount(DeleteAccountRequest) returns (DeleteAccountResponse);
+  rpc LoginAccount(LoginAccountRequest) returns (LoginAccountResponse);
+}
+
+message CreateAccountRequest {
+  string Email = 1;
+  string Password = 2;
+}
+
+message CreateAccountResponse {
+  int32 AccountId = 1;
+}
+
+message GetAccountRequest {
+  int32 AccountId = 1;
+}
+
+message GetAccountResponse {
+  int32 AccountId = 1;
+  string Email = 2;
+}
+
+message UpdateAccountRequest {
+  int32 AccountId = 1;
+  string Email = 2;
+  string OldPassword = 3;
+  string NewPassword = 4;
+}
+
+message UpdateAccountResponse {
+}
+
+message DeleteAccountRequest {
+  int32 AccountId = 1;
+}
+
+message DeleteAccountResponse {
+}
+
+message LoginAccountRequest {
+  string Email = 1;
+  string Password = 2;
+}
+
+message LoginAccountResponse {
+  string AccessToken = 1;
+  string RefreshToken = 2;
+}

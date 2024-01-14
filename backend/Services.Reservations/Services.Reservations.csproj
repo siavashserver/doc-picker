@@ -1,0 +1,41 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+    <PropertyGroup>
+        <TargetFramework>net8.0</TargetFramework>
+        <Nullable>enable</Nullable>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <Protobuf Include="..\Protos\reservations.proto" Link="Protos\reservations.proto" GrpcServices="Server"/>
+    </ItemGroup>
+
+    <ItemGroup>
+        <PackageReference Include="FluentValidation" Version="11.9.0"/>
+        <PackageReference Include="Grpc.AspNetCore" Version="2.60.0"/>
+        <PackageReference Include="Grpc.AspNetCore.Server.Reflection" Version="2.60.0"/>
+        <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="8.0.0">
+            <PrivateAssets>all</PrivateAssets>
+            <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+        </PackageReference>
+        <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="8.0.0"/>
+    </ItemGroup>
+
+    <ItemGroup>
+        <Content Include="..\.dockerignore">
+            <Link>.dockerignore</Link>
+        </Content>
+    </ItemGroup>
+
+    <ItemGroup>
+        <ProjectReference Include="..\Services.Shared\Services.Shared.csproj"/>
+    </ItemGroup>
+
+    <ItemGroup>
+        <Folder Include="Core\Enums\"/>
+        <Folder Include="Core\Exceptions\"/>
+        <Folder Include="Core\Interfaces\"/>
+    </ItemGroup>
+
+</Project>

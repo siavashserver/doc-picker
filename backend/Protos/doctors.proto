@@ -1,0 +1,59 @@
+syntax = "proto3";
+
+option csharp_namespace = "Services.Doctors";
+
+package doctors;
+
+import "google/protobuf/wrappers.proto";
+
+service Doctors {
+  rpc CreateDoctor(CreateDoctorRequest) returns (CreateDoctorResponse);
+  rpc GetDoctors(GetDoctorsRequest) returns (GetDoctorsResponse);
+  rpc UpdateDoctor(UpdateDoctorRequest) returns (UpdateDoctorResponse);
+  rpc DeleteDoctor(DeleteDoctorRequest) returns (DeleteDoctorResponse);
+}
+
+message CreateDoctorRequest {
+  string Name = 1;
+  string SpecialityId = 2;
+}
+
+message CreateDoctorResponse {
+  string DoctorId = 1;
+}
+
+message GetDoctorsRequest {
+  int32 Page = 1;
+  int32 PageSize = 2;
+  repeated string DoctorIds = 3;
+  repeated string Names = 4;
+  repeated string SpecialityIds = 5;
+}
+
+message GetDoctorsResponse {
+  bool HasNextPage = 1;
+  repeated GetDoctorsResult Doctors = 2;
+}
+
+message GetDoctorsResult {
+  google.protobuf.FloatValue Score = 1;
+  string DoctorId = 2;
+  string Name = 3;
+  string SpecialityId = 4;
+}
+
+message UpdateDoctorRequest {
+  string DoctorId = 1;
+  google.protobuf.StringValue Name = 2;
+  google.protobuf.StringValue SpecialityId = 3;
+}
+
+message UpdateDoctorResponse {
+}
+
+message DeleteDoctorRequest {
+  string DoctorId = 1;
+}
+
+message DeleteDoctorResponse {
+}
