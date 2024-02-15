@@ -2,6 +2,17 @@ version: '3'
 
 services:
 
+  rabbitmq:
+    image: rabbitmq:3.12.12-management
+    environment:
+      RABBITMQ_DEFAULT_USER: user
+      RABBITMQ_DEFAULT_PASS: password
+    ports:
+      - 5672:5672
+      - 15672:15672    
+    volumes:
+      - ./volume_rabbitmq:/var/lib/rabbitmq/
+
   postgres:
     image: postgres:16.1
     environment:
@@ -35,5 +46,6 @@ services:
       - elasticsearch
 
 volumes:
+  volume_rabbitmq:
   volume_postgres:
   volume_elasticsearch:

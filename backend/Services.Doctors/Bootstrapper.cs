@@ -1,4 +1,5 @@
-﻿using Services.Doctors.Core.Secrets;
+﻿using MassTransit;
+using Services.Doctors.Core.Secrets;
 using Services.Doctors.Core.Settings;
 using Services.Doctors.WebAPI;
 using Services.Shared;
@@ -28,10 +29,19 @@ public class Bootstrapper : GrpcServiceBootstrapper
             options =>
             {
                 var connectionString =
-                    webApplicationBuilder.Configuration.GetConnectionString("ElasticsearchConnection");
+                    webApplicationBuilder.Configuration.GetConnectionString("Elasticsearch");
                 options.BaseAddress = new Uri(connectionString);
             }
         );
+
+        webApplicationBuilder.Services.AddMassTransit(busRegistrationConfigurator =>
+            busRegistrationConfigurator.UsingRabbitMq(
+                (busRegistrationContext, rabbitMqBusFactoryConfigurator) =>
+                {
+                    var connectionString = webApplicationBuilder.Configuration.GetConnectionString("RabbitMQ");
+                    rabbitMqBusFactoryConfigurator.Host(new Uri(connectionString), "/",
+                        rabbitMqHostConfigurator => { });
+                }));
     }
 
     protected override void ConfigurePipeline(WebApplication webApplication)

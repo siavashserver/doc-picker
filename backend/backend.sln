@@ -10,6 +10,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Services.Doctors", "Service
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebAPI.REST", "WebAPI.REST\WebAPI.REST.csproj", "{0D2E46AA-5B66-4483-8F8A-208D3FCE357E}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Services.Accounts.Shared", "Services.Accounts.Shared\Services.Accounts.Shared.csproj", "{D315BA7A-1868-4E69-8BE0-50F58E2F4DD9}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Services.Doctors.Shared", "Services.Doctors.Shared\Services.Doctors.Shared.csproj", "{8CD3B4EB-D956-4189-8997-852549A0B212}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -36,5 +40,13 @@ Global
 		{0D2E46AA-5B66-4483-8F8A-208D3FCE357E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0D2E46AA-5B66-4483-8F8A-208D3FCE357E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{0D2E46AA-5B66-4483-8F8A-208D3FCE357E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D315BA7A-1868-4E69-8BE0-50F58E2F4DD9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D315BA7A-1868-4E69-8BE0-50F58E2F4DD9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D315BA7A-1868-4E69-8BE0-50F58E2F4DD9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D315BA7A-1868-4E69-8BE0-50F58E2F4DD9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8CD3B4EB-D956-4189-8997-852549A0B212}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8CD3B4EB-D956-4189-8997-852549A0B212}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8CD3B4EB-D956-4189-8997-852549A0B212}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8CD3B4EB-D956-4189-8997-852549A0B212}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

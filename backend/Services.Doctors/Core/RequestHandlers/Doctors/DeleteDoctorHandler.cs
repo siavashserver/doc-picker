@@ -1,11 +1,14 @@
-﻿using Services.Doctors.Core.DataAccess.Entities;
+﻿using MassTransit;
+using Services.Doctors.Core.DataAccess.Entities;
+using Services.Doctors.Shared.Events;
 using Services.Shared.Core.Interfaces;
 using Services.Shared.Extensions;
 
 namespace Services.Doctors.Core.RequestHandlers.Doctors;
 
 public class DeleteDoctorHandler(
-    IHttpClientFactory httpClientFactory
+    IHttpClientFactory httpClientFactory,
+    IPublishEndpoint publishEndpoint
 ) : IRequestHandler<DeleteDoctorRequest, DeleteDoctorResponse>
 {
     public async Task<DeleteDoctorResponse> Handle(DeleteDoctorRequest request)
@@ -15,6 +18,8 @@ public class DeleteDoctorHandler(
         var responseMessage = await httpClient.SendAsync(requestMessage);
 
         responseMessage.StatusCode.RaiseExceptionOnFailure();
+
+        await publishEndpoint.Publish<DoctorDeletedEvent>(new { request.DoctorId });
 
         return new DeleteDoctorResponse();
     }

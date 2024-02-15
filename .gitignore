@@ -1602,3 +1602,4 @@ FodyWeavers.xsd
 
 volume_elasticsearch
 volume_postgres
+volume_rabbitmq

@@ -1,5 +1,7 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using MassTransit;
+using Microsoft.EntityFrameworkCore;
 using Services.Reservations.Core.DataAccess;
+using Services.Reservations.Core.EventHandlers;
 using Services.Reservations.Core.Secrets;
 using Services.Reservations.Core.Settings;
 using Services.Reservations.WebAPI;
@@ -31,6 +33,19 @@ public class Bootstrapper : GrpcServiceBootstrapper
 
     protected override void ConfigureServices(WebApplicationBuilder webApplicationBuilder)
     {
+        webApplicationBuilder.Services.AddMassTransit(busRegistrationConfigurator =>
+        {
+            busRegistrationConfigurator.AddConsumer<AccountDeletedEventHandler>();
+            busRegistrationConfigurator.AddConsumer<DoctorDeletedEventHandler>();
+
+            busRegistrationConfigurator.UsingRabbitMq((busRegistrationContext, rabbitMqBusFactoryConfigurator) =>
+            {
+                rabbitMqBusFactoryConfigurator.ConfigureEndpoints(busRegistrationContext);
+
+                var connectionString = webApplicationBuilder.Configuration.GetConnectionString("RabbitMQ");
+                rabbitMqBusFactoryConfigurator.Host(new Uri(connectionString), "/", rabbitMqHostConfigurator => { });
+            });
+        });
     }
 
     protected override void ConfigurePipeline(WebApplication webApplication)

@@ -16,4 +16,8 @@
         <PackageReference Include="Grpc.AspNetCore" Version="2.60.0"/>
         <PackageReference Include="Grpc.AspNetCore.Server.Reflection" Version="2.60.0"/>
     </ItemGroup>
+
+    <ItemGroup>
+        <Folder Include="Core\Services\"/>
+    </ItemGroup>
 </Project>

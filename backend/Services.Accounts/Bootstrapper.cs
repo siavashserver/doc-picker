@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using MassTransit;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Services.Accounts.Core.DataAccess;
 using Services.Accounts.Core.DataAccess.Entities;
@@ -38,6 +39,15 @@ public class Bootstrapper : GrpcServiceBootstrapper
         webApplicationBuilder.Services.AddTransient<IPasswordHasher<Account>, PasswordHasher<Account>>();
         webApplicationBuilder.Services.AddTransient<IPasswordService, PasswordService>();
         webApplicationBuilder.Services.AddTransient<ISessionTokenService, SessionTokenService>();
+
+        webApplicationBuilder.Services.AddMassTransit(busRegistrationConfigurator =>
+            busRegistrationConfigurator.UsingRabbitMq(
+                (busRegistrationContext, rabbitMqBusFactoryConfigurator) =>
+                {
+                    var connectionString = webApplicationBuilder.Configuration.GetConnectionString("RabbitMQ");
+                    rabbitMqBusFactoryConfigurator.Host(new Uri(connectionString), "/",
+                        rabbitMqHostConfigurator => { });
+                }));
     }
 
     protected override void ConfigurePipeline(WebApplication webApplication)
