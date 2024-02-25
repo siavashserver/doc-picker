@@ -1,0 +1,59 @@
+syntax = "proto3";
+
+option csharp_namespace = "Services.Doctors";
+
+package specialities;
+
+import "google/protobuf/wrappers.proto";
+
+service Specialities {
+  rpc CreateSpeciality(CreateSpecialityRequest) returns (CreateSpecialityResponse);
+  rpc GetSpecialities(GetSpecialitiesRequest) returns (GetSpecialitiesResponse);
+  rpc UpdateSpeciality(UpdateSpecialityRequest) returns (UpdateSpecialityResponse);
+  rpc DeleteSpeciality(DeleteSpecialityRequest) returns (DeleteSpecialityResponse);
+}
+
+message CreateSpecialityRequest {
+  string Name = 1;
+  string Description = 2;
+}
+
+message CreateSpecialityResponse {
+  string SpecialityId = 1;
+}
+
+message GetSpecialitiesRequest {
+  int32 Page = 1;
+  int32 PageSize = 2;
+  repeated string SpecialityIds = 3;
+  repeated string Names = 4;
+  repeated string Descriptions = 5;
+}
+
+message GetSpecialitiesResponse {
+  bool HasNextPage = 1;
+  repeated GetSpecialitiesResult Specialities = 2;
+}
+
+message GetSpecialitiesResult {
+  google.protobuf.FloatValue Score = 1;
+  string SpecialityId = 2;
+  string Name = 3;
+  string Description = 4;
+}
+
+message UpdateSpecialityRequest {
+  string SpecialityId = 1;
+  google.protobuf.StringValue Name = 2;
+  google.protobuf.StringValue Description = 3;
+}
+
+message UpdateSpecialityResponse {
+}
+
+message DeleteSpecialityRequest {
+  string SpecialityId = 1;
+}
+
+message DeleteSpecialityResponse {
+}

@@ -1,0 +1,51 @@
+version: '3'
+
+services:
+
+  rabbitmq:
+    image: rabbitmq:3.12.12-management
+    environment:
+      RABBITMQ_DEFAULT_USER: user
+      RABBITMQ_DEFAULT_PASS: password
+    ports:
+      - 5672:5672
+      - 15672:15672    
+    volumes:
+      - ./volume_rabbitmq:/var/lib/rabbitmq/
+
+  postgres:
+    image: postgres:16.1
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER:-user}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-password}
+      PGDATA: /data/postgres
+    ports:
+      - 5432:5432
+    volumes:
+      - ./volume_postgres:/data/postgres
+
+  elasticsearch:
+    image: elasticsearch:8.11.3
+    environment:
+      - discovery.type=single-node
+      - xpack.security.enabled=false
+      - ES_JAVA_OPTS=-Xmx512m
+    ports:
+      - 9200:9200
+      - 9300:9300
+    volumes:
+      - ./volume_elasticsearch:/usr/share/elasticsearch/data
+
+  kibana:
+    image: kibana:8.11.3
+    environment:
+      - ELASTICSEARCH_HOSTS=http://elasticsearch:9200
+    ports:
+      - 5601:5601
+    depends_on:
+      - elasticsearch
+
+volumes:
+  volume_rabbitmq:
+  volume_postgres:
+  volume_elasticsearch:

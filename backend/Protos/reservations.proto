@@ -1,0 +1,77 @@
+syntax = "proto3";
+
+option csharp_namespace = "Services.Reservations";
+
+package reservations;
+
+import "google/protobuf/timestamp.proto";
+import "google/protobuf/wrappers.proto";
+
+service Reservations {
+  rpc CreateReservation(CreateReservationRequest) returns (CreateReservationResponse);
+  rpc GetReservations(GetReservationsRequest) returns (GetReservationsResponse);
+  rpc UpdateReservation(UpdateReservationRequest) returns (UpdateReservationResponse);
+  rpc DeleteReservation(DeleteReservationRequest) returns (DeleteReservationResponse);
+}
+
+message CreateReservationRequest {
+  int32 PatientId = 1;
+  string DoctorId = 2;
+  google.protobuf.Timestamp Date = 3;
+  int32 Shift = 4;
+}
+
+message CreateReservationResponse {
+  int32 ReservationId = 1;
+}
+
+message GetReservationsRequest {
+  int32 Page = 1;
+  int32 PageSize = 2;
+  repeated int32 ReservationIds = 3;
+  repeated int32 PatientIds = 4;
+  repeated string DoctorIds = 5;
+  ReservationDateRange Dates = 6;
+  ReservationShiftRange Shifts = 7;
+}
+
+message ReservationDateRange {
+  google.protobuf.Timestamp Start = 1;
+  google.protobuf.Timestamp End = 2;
+}
+
+message ReservationShiftRange {
+  google.protobuf.Int32Value Start = 1;
+  google.protobuf.Int32Value End = 2;
+}
+
+message GetReservationsResponse {
+  bool HasNextPage = 1;
+  repeated GetReservationsResult Reservations = 2;
+}
+
+message GetReservationsResult {
+  int32 ReservationId = 1;
+  int32 PatientId = 2;
+  string DoctorId = 3;
+  google.protobuf.Timestamp Date = 4;
+  int32 Shift = 5;
+}
+
+message UpdateReservationRequest {
+  int32 ReservationId = 1;
+  google.protobuf.Int32Value PatientId = 2;
+  google.protobuf.StringValue DoctorId = 3;
+  google.protobuf.Timestamp Date = 4;
+  google.protobuf.Int32Value Shift = 5;
+}
+
+message UpdateReservationResponse {
+}
+
+message DeleteReservationRequest {
+  int32 ReservationId = 1;
+}
+
+message DeleteReservationResponse {
+}
