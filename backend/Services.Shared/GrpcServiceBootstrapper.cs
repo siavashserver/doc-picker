@@ -10,15 +10,16 @@ namespace Services.Shared;
 
 public abstract class GrpcServiceBootstrapper
 {
-    public void Bootstrap(string[] args)
+    public async Task Bootstrap(string[] args)
     {
         var webApplicationBuilder = WebApplication.CreateBuilder(args);
         ConfigureWebApplicationBuilder(webApplicationBuilder);
 
         var webApplication = webApplicationBuilder.Build();
+        await ConfigureDatabaseMigrations(webApplication);
         ConfigureWebApplication(webApplication);
 
-        webApplication.Run();
+        await webApplication.RunAsync();
     }
 
     private void ConfigureWebApplicationBuilder(WebApplicationBuilder webApplicationBuilder)
@@ -55,5 +56,6 @@ public abstract class GrpcServiceBootstrapper
     protected abstract void ConfigureSettings(WebApplicationBuilder webApplicationBuilder);
     protected abstract void ConfigureDatabase(WebApplicationBuilder webApplicationBuilder);
     protected abstract void ConfigureServices(WebApplicationBuilder webApplicationBuilder);
+    protected abstract Task ConfigureDatabaseMigrations(WebApplication webApplication);
     protected abstract void ConfigurePipeline(WebApplication webApplication);
 }

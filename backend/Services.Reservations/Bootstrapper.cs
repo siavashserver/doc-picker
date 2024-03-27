@@ -48,6 +48,13 @@ public class Bootstrapper : GrpcServiceBootstrapper
         });
     }
 
+    protected override async Task ConfigureDatabaseMigrations(WebApplication webApplication)
+    {
+        using var scope = webApplication.Services.CreateScope();
+        var dataContext = scope.ServiceProvider.GetRequiredService<DataContext>();
+        await dataContext.Database.MigrateAsync();
+    }
+
     protected override void ConfigurePipeline(WebApplication webApplication)
     {
         webApplication.MapGrpcService<ReservationsController>();

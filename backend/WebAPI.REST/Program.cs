@@ -48,4 +48,4 @@ app.ConfigureApplicationPipeline();
 /* Run Application ***************************************/
 /*********************************************************/
 
-app.Run();
+await app.RunAsync();

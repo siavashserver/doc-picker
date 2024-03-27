@@ -44,6 +44,11 @@ public class Bootstrapper : GrpcServiceBootstrapper
                 }));
     }
 
+    protected override async Task ConfigureDatabaseMigrations(WebApplication webApplication)
+    {
+        // TODO: Implement elasticsearch initial migrations
+    }
+
     protected override void ConfigurePipeline(WebApplication webApplication)
     {
         webApplication.MapGrpcService<DoctorsController>();
