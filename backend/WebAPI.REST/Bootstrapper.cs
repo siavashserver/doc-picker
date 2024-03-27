@@ -48,7 +48,7 @@ public static class Bootstrapper
     private static void AddCommonServices(this WebApplicationBuilder builder)
     {
         builder.Services.AddCors();
-        builder.Services.AddControllers();
+        builder.Services.AddControllers().AddJsonOptions(jsonOptions => jsonOptions.JsonSerializerOptions.PropertyNamingPolicy = null);
         builder.Services.AddResponseCaching();
     }
 
