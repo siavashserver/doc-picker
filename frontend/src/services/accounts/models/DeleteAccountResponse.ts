@@ -1,1 +1,2 @@
-﻿export interface DeleteAccountResponse {}
+﻿export interface DeleteAccountResponse {
+}

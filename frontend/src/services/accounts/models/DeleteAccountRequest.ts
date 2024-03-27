@@ -1,3 +1,3 @@
 ﻿export interface DeleteAccountRequest {
-  AccountId: number;
+    AccountId: number;
 }

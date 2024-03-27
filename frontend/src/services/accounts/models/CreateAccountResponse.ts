@@ -1,3 +1,3 @@
 ﻿export interface CreateAccountResponse {
-  AccountId: number;
+    AccountId: number;
 }

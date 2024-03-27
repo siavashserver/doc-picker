@@ -1,3 +1,3 @@
 ﻿export interface GetReservationRequest {
-  ReservationId: number;
+    ReservationId: number;
 }

@@ -1,4 +1,4 @@
 ﻿export interface ReservationShiftRange {
-  Start: number;
-  End: number;
+    Start: number;
+    End: number;
 }

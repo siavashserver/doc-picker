@@ -1,3 +1,3 @@
 ﻿export interface DeleteReservationRequest {
-  ReservationId: number;
+    ReservationId: number;
 }

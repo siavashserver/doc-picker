@@ -1,6 +1,6 @@
 ﻿export interface CreateReservationRequest {
-  PatientId: number;
-  DoctorId: string;
-  Date: Date;
-  Shift: number;
+    PatientId: number;
+    DoctorId: string;
+    Date: Date;
+    Shift: number;
 }

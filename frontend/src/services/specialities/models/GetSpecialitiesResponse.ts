@@ -1,6 +1,6 @@
-﻿import { GetSpecialitiesResult } from "@/services/specialities/models/GetSpecialitiesResult";
+﻿import {GetSpecialitiesResult} from "@/services/specialities/models/GetSpecialitiesResult";
 
 export interface GetSpecialitiesResponse {
-  HasNextPage: boolean;
-  Specialities: GetSpecialitiesResult[];
+    HasNextPage: boolean;
+    Specialities: GetSpecialitiesResult[];
 }

@@ -1,3 +1,3 @@
 ﻿export interface GetAccountRequest {
-  AccountId: number;
+    AccountId: number;
 }

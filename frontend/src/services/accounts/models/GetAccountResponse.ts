@@ -1,4 +1,4 @@
 ﻿export interface GetAccountResponse {
-  AccountId: number;
-  Email: string;
+    AccountId: number;
+    Email: string;
 }

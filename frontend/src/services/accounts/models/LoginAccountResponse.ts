@@ -1,4 +1,4 @@
 ﻿export interface LoginAccountResponse {
-  AccessToken: string;
-  RefreshToken: string;
+    AccessToken: string;
+    RefreshToken: string;
 }

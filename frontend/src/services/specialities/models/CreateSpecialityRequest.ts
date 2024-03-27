@@ -1,4 +1,4 @@
 ﻿export interface CreateSpecialityRequest {
-  Name: string;
-  Description: string;
+    Name: string;
+    Description: string;
 }

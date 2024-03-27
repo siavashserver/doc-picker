@@ -1,4 +1,4 @@
 ﻿export interface ReservationDateRange {
-  Start: Date;
-  End: Date;
+    Start: Date;
+    End: Date;
 }

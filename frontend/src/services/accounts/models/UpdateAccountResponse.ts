@@ -1,1 +1,2 @@
-﻿export interface UpdateAccountResponse {}
+﻿export interface UpdateAccountResponse {
+}

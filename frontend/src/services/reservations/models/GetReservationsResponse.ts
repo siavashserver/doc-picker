@@ -1,6 +1,6 @@
-﻿import { GetReservationsResult } from "@/services/reservations/models/GetReservationsResult";
+﻿import {GetReservationsResult} from "@/services/reservations/models/GetReservationsResult";
 
 export interface GetReservationsResponse {
-  HasNextPage: boolean;
-  Reservations: GetReservationsResult[];
+    HasNextPage: boolean;
+    Reservations: GetReservationsResult[];
 }

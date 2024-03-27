@@ -1,1 +1,2 @@
-﻿export interface UpdateReservationResponse {}
+﻿export interface UpdateReservationResponse {
+}

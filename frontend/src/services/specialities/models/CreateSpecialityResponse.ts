@@ -1,3 +1,3 @@
 ﻿export interface CreateSpecialityResponse {
-  SpecialityId: string;
+    SpecialityId: string;
 }

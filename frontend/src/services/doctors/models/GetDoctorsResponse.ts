@@ -1,6 +1,6 @@
-﻿import { GetDoctorsResult } from "@/services/doctors/models/GetDoctorsResult";
+﻿import {GetDoctorsResult} from "@/services/doctors/models/GetDoctorsResult";
 
 export interface GetDoctorsResponse {
-  HasNextPage: boolean;
-  Doctors: GetDoctorsResult[];
+    HasNextPage: boolean;
+    Doctors: GetDoctorsResult[];
 }

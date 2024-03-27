@@ -1,1 +1,2 @@
-﻿export interface DeleteReservationResponse {}
+﻿export interface DeleteReservationResponse {
+}
