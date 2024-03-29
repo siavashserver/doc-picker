@@ -11,7 +11,7 @@ public record CreateReservationRequestDTO(int PatientId, string DoctorId, DateOn
         {
             PatientId = source.PatientId,
             DoctorId = source.DoctorId,
-            Date = source.Date.ToDateTime(TimeOnly.MinValue).ToTimestamp(),
+            Date = source.Date.ToDateTime(TimeOnly.MinValue, DateTimeKind.Utc).ToTimestamp(),
             Shift = source.Shift
         };
     }

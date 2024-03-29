@@ -1,6 +1,7 @@
 ﻿using System.Reflection;
 using FluentValidation;
 using Microsoft.AspNetCore.Builder;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Services.Shared.Core.Interfaces;
@@ -25,6 +26,9 @@ public abstract class GrpcServiceBootstrapper
     private void ConfigureWebApplicationBuilder(WebApplicationBuilder webApplicationBuilder)
     {
         ConfigureSettings(webApplicationBuilder);
+
+        webApplicationBuilder.Configuration.AddEnvironmentVariables();
+
         ConfigureDatabase(webApplicationBuilder);
         ConfigureServices(webApplicationBuilder);
 

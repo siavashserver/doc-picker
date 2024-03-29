@@ -25,6 +25,7 @@ public static class Bootstrapper
     private static void AddExternalConfigurations(this WebApplicationBuilder builder)
     {
         builder.Configuration.AddJsonFile("appsecrets.json", false, true);
+        builder.Configuration.AddEnvironmentVariables();
 
         builder.Services.Configure<ApplicationSecrets>(
             builder.Configuration.GetSection("ApplicationSecrets"));
@@ -35,20 +36,25 @@ public static class Bootstrapper
 
     private static void AddMainServices(this WebApplicationBuilder builder)
     {
+        var accountsServiceAddress = builder.Configuration.GetConnectionString("Services.Accounts");
+        var doctorsServiceAddress = builder.Configuration.GetConnectionString("Services.Doctors");
+        var reservationsServiceAddress = builder.Configuration.GetConnectionString("Services.Reservations");
+
         builder.Services.AddGrpcClient<Accounts.AccountsClient>(nameof(Accounts.AccountsClient),
-            options => options.Address = new Uri("https://localhost:5400"));
+            options => options.Address = new Uri(accountsServiceAddress));
         builder.Services.AddGrpcClient<Doctors.DoctorsClient>(nameof(Doctors.DoctorsClient),
-            options => options.Address = new Uri("https://localhost:5410"));
+            options => options.Address = new Uri(doctorsServiceAddress));
         builder.Services.AddGrpcClient<Specialities.SpecialitiesClient>(nameof(Specialities.SpecialitiesClient),
-            options => options.Address = new Uri("https://localhost:5410"));
+            options => options.Address = new Uri(doctorsServiceAddress));
         builder.Services.AddGrpcClient<Reservations.ReservationsClient>(nameof(Reservations.ReservationsClient),
-            options => options.Address = new Uri("https://localhost:5420"));
+            options => options.Address = new Uri(reservationsServiceAddress));
     }
 
     private static void AddCommonServices(this WebApplicationBuilder builder)
     {
         builder.Services.AddCors();
-        builder.Services.AddControllers().AddJsonOptions(jsonOptions => jsonOptions.JsonSerializerOptions.PropertyNamingPolicy = null);
+        builder.Services.AddControllers()
+            .AddJsonOptions(jsonOptions => jsonOptions.JsonSerializerOptions.PropertyNamingPolicy = null);
         builder.Services.AddResponseCaching();
     }
 
@@ -126,14 +132,14 @@ public static class Bootstrapper
 
     private static void ConfigureSwagger(this WebApplication application)
     {
-        if (!application.Environment.IsDevelopment()) return;
+        //if (!application.Environment.IsDevelopment()) return;
         application.UseSwagger();
         application.UseSwaggerUI();
     }
 
     private static void ConfigureHttps(this WebApplication application)
     {
-        application.UseHttpsRedirection();
+        //application.UseHttpsRedirection();
     }
 
     private static void ConfigureRouting(this WebApplication application)

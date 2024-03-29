@@ -1,0 +1,345 @@
+# WebAPI.REST Deployment
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: webapi-rest
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: webapi-rest
+  template:
+    metadata:
+      labels:
+        app: webapi-rest
+    spec:
+      containers:
+        - name: webapi-rest
+          image: webapi.rest:latest
+          imagePullPolicy: IfNotPresent
+          env:
+            - name: ConnectionStrings__Services.Accounts
+              value: http://services-accounts:5400
+            - name: ConnectionStrings__Services.Doctors
+              value: http://services-doctors:5410
+            - name: ConnectionStrings__Services.Reservations
+              value: http://services-reservations:5420
+          ports:
+            - containerPort: 8080
+              hostPort: 80
+      restartPolicy: Always
+---
+# WebAPI.REST Service
+apiVersion: v1
+kind: Service
+metadata:
+  name: webapi-rest
+spec:
+  type: NodePort
+  selector:
+    app: webapi-rest
+  ports:
+    - protocol: TCP
+      name: webapi-rest
+      port: 80
+      targetPort: 8080
+      nodePort: 30080
+---
+# Services.Accounts Deployment
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: services-accounts
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: services-accounts
+  template:
+    metadata:
+      labels:
+        app: services-accounts
+    spec:
+      containers:
+        - name: services-accounts
+          image: services.accounts:latest
+          imagePullPolicy: IfNotPresent
+          env:
+            - name: ConnectionStrings__PostgreSQL
+              value: Host=postgres:5432;Database=db_reservations;Username=user;Password=password
+            - name: ConnectionStrings__RabbitMQ
+              value: amqp://user:password@rabbitmq:5672
+          ports:
+            - containerPort: 5400
+              hostPort: 5400
+      restartPolicy: Always
+---
+# Services.Accounts Service
+apiVersion: v1
+kind: Service
+metadata:
+  name: services-accounts
+spec:
+  selector:
+    app: services-accounts
+  ports:
+    - protocol: TCP
+      name: services-accounts
+      port: 5400
+      targetPort: 5400
+---
+# Services.Doctors Deployment
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: services-doctors
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: services-doctors
+  template:
+    metadata:
+      labels:
+        app: services-doctors
+    spec:
+      containers:
+        - name: services-doctors
+          image: services.doctors:latest
+          imagePullPolicy: IfNotPresent
+          env:
+            - name: ConnectionStrings__Elasticsearch
+              value: http://elasticsearch:9200
+            - name: ConnectionStrings__RabbitMQ
+              value: amqp://user:password@rabbitmq:5672
+          ports:
+            - containerPort: 5410
+              hostPort: 5410
+      restartPolicy: Always
+---
+# Services.Doctors Service
+apiVersion: v1
+kind: Service
+metadata:
+  name: services-doctors
+spec:
+  selector:
+    app: services-doctors
+  ports:
+    - protocol: TCP
+      name: services-doctors
+      port: 5410
+      targetPort: 5410
+---
+# Services.Reservations Deployment
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: services-reservations
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: services-reservations
+  template:
+    metadata:
+      labels:
+        app: services-reservations
+    spec:
+      containers:
+        - name: services-reservations
+          image: services.reservations:latest
+          imagePullPolicy: IfNotPresent
+          env:
+            - name: ConnectionStrings__PostgreSQL
+              value: Host=postgres:5432;Database=db_reservations;Username=user;Password=password
+            - name: ConnectionStrings__RabbitMQ
+              value: amqp://user:password@rabbitmq:5672
+          ports:
+            - containerPort: 5420
+              hostPort: 5420
+      restartPolicy: Always
+---
+# Services.Reservations Service
+apiVersion: v1
+kind: Service
+metadata:
+  name: services-reservations
+spec:
+  selector:
+    app: services-reservations
+  ports:
+    - protocol: TCP
+      name: services-reservations
+      port: 5420
+      targetPort: 5420
+---
+# RabbitMQ Deployment
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: rabbitmq
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: rabbitmq
+  template:
+    metadata:
+      labels:
+        app: rabbitmq
+    spec:
+      containers:
+        - name: rabbitmq
+          image: rabbitmq:3.12.12-management
+          env:
+            - name: RABBITMQ_DEFAULT_USER
+              value: "user"
+            - name: RABBITMQ_DEFAULT_PASS
+              value: "password"
+          ports:
+            - containerPort: 5672
+            - containerPort: 15672
+---
+# RabbitMQ Service
+apiVersion: v1
+kind: Service
+metadata:
+  name: rabbitmq
+spec:
+  selector:
+    app: rabbitmq
+  ports:
+    - protocol: TCP
+      name: rabbitmq
+      port: 5672
+      targetPort: 5672
+    - protocol: TCP
+      name: rabbitmq-manager
+      port: 15672
+      targetPort: 15672
+---
+# Postgres Deployment
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: postgres
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: postgres
+  template:
+    metadata:
+      labels:
+        app: postgres
+    spec:
+      containers:
+        - name: postgres
+          image: postgres:16.1
+          env:
+            - name: POSTGRES_USER
+              value: "user"
+            - name: POSTGRES_PASSWORD
+              value: "password"
+            - name: PGDATA
+              value: "/data/postgres"
+          ports:
+            - containerPort: 5432
+---
+# Postgres Service
+apiVersion: v1
+kind: Service
+metadata:
+  name: postgres
+spec:
+  selector:
+    app: postgres
+  ports:
+    - protocol: TCP
+      port: 5432
+      targetPort: 5432
+---
+# Elasticsearch Deployment
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: elasticsearch
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: elasticsearch
+  template:
+    metadata:
+      labels:
+        app: elasticsearch
+    spec:
+      containers:
+        - name: elasticsearch
+          image: elasticsearch:8.11.3
+          env:
+            - name: discovery.type
+              value: "single-node"
+            - name: xpack.security.enabled
+              value: "false"
+            - name: ES_JAVA_OPTS
+              value: "-Xmx512m"
+          ports:
+            - containerPort: 9200
+            - containerPort: 9300
+---
+# Elasticsearch Service
+apiVersion: v1
+kind: Service
+metadata:
+  name: elasticsearch
+spec:
+  selector:
+    app: elasticsearch
+  ports:
+    - protocol: TCP
+      name: elasticsearch
+      port: 9200
+      targetPort: 9200
+    - protocol: TCP
+      name: elasticsearch-management
+      port: 9300
+      targetPort: 9300
+---
+# Kibana Deployment
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: kibana
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: kibana
+  template:
+    metadata:
+      labels:
+        app: kibana
+    spec:
+      containers:
+        - name: kibana
+          image: kibana:8.11.3
+          env:
+            - name: ELASTICSEARCH_HOSTS
+              value: "http://elasticsearch:9200"
+          ports:
+            - containerPort: 5601
+---
+# Kibana Service
+apiVersion: v1
+kind: Service
+metadata:
+  name: kibana
+spec:
+  selector:
+    app: kibana
+  ports:
+    - protocol: TCP
+      port: 5601
+      targetPort: 5601

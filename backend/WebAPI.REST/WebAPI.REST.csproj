@@ -24,13 +24,13 @@
     </ItemGroup>
 
     <ItemGroup>
-        <Content Include="..\.dockerignore">
-            <Link>.dockerignore</Link>
-        </Content>
+        <Folder Include="wwwroot\"/>
     </ItemGroup>
 
     <ItemGroup>
-        <Folder Include="wwwroot\"/>
+        <Content Include="..\.dockerignore">
+            <Link>.dockerignore</Link>
+        </Content>
     </ItemGroup>
 
 </Project>
