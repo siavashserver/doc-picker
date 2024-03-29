@@ -7,8 +7,8 @@ services:
       RABBITMQ_DEFAULT_USER: user
       RABBITMQ_DEFAULT_PASS: password
     ports:
-      - 5672:5672
-      - 15672:15672
+      - "5672:5672"
+      - "15672:15672"
 
   postgres:
     image: postgres:16.1
@@ -17,7 +17,7 @@ services:
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-password}
       PGDATA: /data/postgres
     ports:
-      - 5432:5432
+      - "5432:5432"
 
   elasticsearch:
     image: elasticsearch:8.11.3
@@ -26,15 +26,15 @@ services:
       - xpack.security.enabled=false
       - ES_JAVA_OPTS=-Xmx512m
     ports:
-      - 9200:9200
-      - 9300:9300
+      - "9200:9200"
+      - "9300:9300"
 
   kibana:
     image: kibana:8.11.3
     environment:
       - ELASTICSEARCH_HOSTS=http://elasticsearch:9200
     ports:
-      - 5601:5601
+      - "5601:5601"
     depends_on:
       - elasticsearch
 
@@ -44,7 +44,7 @@ services:
       - ConnectionStrings__PostgreSQL=Host=postgres:5432;Database=db_reservations;Username=user;Password=password
       - ConnectionStrings__RabbitMQ=amqp://user:password@rabbitmq:5672
     ports:
-      - 5400:5400
+      - "5400:5400"
     depends_on:
       - rabbitmq
       - postgres
@@ -56,7 +56,7 @@ services:
       - ConnectionStrings__Elasticsearch=http://elasticsearch:9200
       - ConnectionStrings__RabbitMQ=amqp://user:password@rabbitmq:5672
     ports:
-      - 5410:5410
+      - "5410:5410"
     depends_on:
       - rabbitmq
       - elasticsearch
@@ -68,7 +68,7 @@ services:
       - ConnectionStrings__PostgreSQL=Host=postgres:5432;Database=db_reservations;Username=user;Password=password
       - ConnectionStrings__RabbitMQ=amqp://user:password@rabbitmq:5672
     ports:
-      - 5420:5420
+      - "5420:5420"
     depends_on:
       - rabbitmq
       - postgres
@@ -78,10 +78,10 @@ services:
     image: webapi.rest
     environment:
       - ConnectionStrings__Services.Accounts=http://services.accounts:5400
-      - ConnectionStrings__Services.Doctors=http://services.doctors:5400
-      - ConnectionStrings__Services.Reservations=http://services.reservations:5400
+      - ConnectionStrings__Services.Doctors=http://services.doctors:5410
+      - ConnectionStrings__Services.Reservations=http://services.reservations:5420
     ports:
-      - 80:8080
+      - "80:8080"
     depends_on:
       - services.accounts
       - services.doctors
